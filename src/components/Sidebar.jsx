@@ -52,7 +52,11 @@ export default function Sidebar() {
         initial={{ width: 80 }}
         animate={{ width: collapsed ? 80 : 240 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="h-screen bg-white dark:bg-gray-950 border-r shadow-sm flex flex-col fixed left-0 top-0 z-40"
+        className={cn(
+          "fixed lg:static z-40 flex flex-col h-screen bg-white border-r shadow-sm",
+          openMobile ? "left-0" : "-left-80",
+          "lg:left-0"
+        )}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4">
