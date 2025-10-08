@@ -23,7 +23,7 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Topbar() {
   return (
-    <header className="flex items-center justify-between bg-white shadow-sm rounded-lg px-4 py-3 mb-6 sticky top-0 z-30">
+    <header className="flex items-center justify-between bg-white shadow-sm rounded-lg px-4 py-3 mb-6 sticky top-3 z-30">
       {/* Left Section */}
       <div className="flex items-center gap-3">
         {/* Mobile Menu Toggle */}
@@ -92,3 +92,6 @@ export default function Topbar() {
     </header>
   );
 }
+
+
+
