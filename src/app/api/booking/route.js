@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import Booking, { BookingStatus } from "@/models/Booking";
-import connectDB from "@/lib/mongodb";
+import connectDB from "@/database/mongodb";
 
 // ✅ POST — Create a new booking
 export async function POST(req) {

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import ContactMessage from "@/models/Contact";
-import connectDB from "@/lib/mongodb";
+import connectDB from "@/database/mongodb";
 
 // ✅ POST — Save new message
 export async function POST(req) {
