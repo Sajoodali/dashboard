@@ -5,7 +5,7 @@ export default function DashboardLayout({ children }) {
   return (
     <div className="flex min-h-screen bg-gray-100">
       {/* Sidebar */}
-      <Sidebar />
+      <div><Sidebar /></div>
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col p-6">
