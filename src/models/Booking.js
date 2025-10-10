@@ -56,7 +56,7 @@ const VehicleBookingSchema = new mongoose.Schema({
   mainService: { type: String, required: true },
   package: { type: String, required: true },
   additionalServices: [{ type: String }],
-  vehicleType: { type: String, required: true },
+  vehicleType: { type: String },
   vehicleMake: { type: String, required: true },
   vehicleModel: { type: String, required: true },
   vehicleYear: { type: String, required: true },
