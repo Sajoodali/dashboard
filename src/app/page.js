@@ -92,7 +92,7 @@ export default function Home() {
       </div>
 
       <footer className="mt-10 text-gray-500 text-sm">
-        Built with ❤️ by Sajood | Powered by Next.js + MongoDB
+        Built with Gobium Cloud | Powered by Next.js + MongoDB
       </footer>
     </main>
   );
