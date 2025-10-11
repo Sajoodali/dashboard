@@ -1,6 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import DataTable from "@/components/common/DataTable";
+import SummaryCards from "@/components/common/SummaryCards";
+import PageHeader from "@/components/common/PageHeader";
 import BookingSearchBar from "@/components/SearchBar";
 import BookingDetailsDialog from "@/components/BookingDetailsDialog";
 import { motion } from "framer-motion";
@@ -13,13 +16,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  CalendarDays,
-  Plus,
-  CheckCircle,
-  Clock,
-  XCircle,
-} from "lucide-react";
+import { CalendarDays, CheckCircle, Clock, XCircle } from "lucide-react";
 import { fetchBookings } from "@/action/bookingActions";
 
 export default function BookingsPage() {
@@ -66,7 +63,7 @@ export default function BookingsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <motion.div
+      {/* <motion.div
         initial="hidden"
         animate="visible"
         variants={fadeUp}
@@ -80,11 +77,12 @@ export default function BookingsPage() {
             Manage, track, and monitor all bookings in one place.
           </p>
         </div>
-
-        <Button className="flex items-center gap-2">
-          <Plus className="h-4 w-4" /> New Booking
-        </Button>
-      </motion.div>
+      </motion.div> */}
+      <PageHeader
+        title="Bookings Overview"
+        description="Manage, track, and monitor all bookings in one place."
+        icon={CalendarDays}
+      />
 
       {/* Search Bar */}
       <motion.div
@@ -100,7 +98,7 @@ export default function BookingsPage() {
       <Separator />
 
       {/* If searching → show search results */}
-      {isSearching ? (
+     {isSearching ? (
         <motion.div
           initial="hidden"
           animate="visible"
@@ -170,64 +168,100 @@ export default function BookingsPage() {
       ) : (
         <>
           {/* Summary Cards */}
-          <motion.div
+          {/* <motion.div
             initial="hidden"
             animate="visible"
             custom={2}
             variants={fadeUp}
             className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6"
           >
-            <Card className="shadow-sm hover:shadow-md transition">
-              <CardHeader>
-                <CardTitle>Total Bookings</CardTitle>
-                <CardDescription>All bookings to date</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold">{bookings.length}</p>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-sm hover:shadow-md transition">
-              <CardHeader>
-                <CardTitle>Confirmed</CardTitle>
-                <CardDescription>Active and approved</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-green-600">
-                  {bookings.filter((b) => b.status === "confirmed").length}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-sm hover:shadow-md transition">
-              <CardHeader>
-                <CardTitle>Pending</CardTitle>
-                <CardDescription>Awaiting confirmation</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-yellow-600">
-                  {bookings.filter((b) => b.status === "pending").length}
-                </p>
-              </CardContent>
-            </Card>
-
-            <Card className="shadow-sm hover:shadow-md transition">
-              <CardHeader>
-                <CardTitle>Cancelled</CardTitle>
-                <CardDescription>Declined or cancelled</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-2xl font-bold text-red-600">
-                  {bookings.filter((b) => b.status === "cancelled").length}
-                </p>
-              </CardContent>
-            </Card>
-          </motion.div>
+            {[
+              {
+                title: "Total Bookings",
+                description: "All bookings to date",
+                value: bookings.length,
+                icon: CalendarDays,
+                color: "from-blue-500/10 to-blue-500/5 text-blue-700",
+              },
+              {
+                title: "Confirmed",
+                description: "Active and approved",
+                value: bookings.filter((b) => b.status === "confirmed").length,
+                icon: CheckCircle,
+                color: "from-green-500/10 to-green-500/5 text-green-700",
+              },
+              {
+                title: "Pending",
+                description: "Awaiting confirmation",
+                value: bookings.filter((b) => b.status === "pending").length,
+                icon: Clock,
+                color: "from-yellow-500/10 to-yellow-500/5 text-yellow-700",
+              },
+              {
+                title: "Cancelled",
+                description: "Declined or cancelled",
+                value: bookings.filter((b) => b.status === "cancelled").length,
+                icon: XCircle,
+                color: "from-red-500/10 to-red-500/5 text-red-700",
+              },
+            ].map((card, index) => (
+              <motion.div key={index} custom={index} variants={fadeUp}>
+                <Card
+                  className={`bg-gradient-to-br ${card.color} border-none shadow-lg hover:shadow-xl transition-all duration-300`}
+                >
+                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                    <CardTitle className="text-sm font-medium">
+                      {card.title}
+                    </CardTitle>
+                    <card.icon className="h-5 w-5 opacity-70" />
+                  </CardHeader>
+                  <CardContent>
+                    <div className="text-3xl font-bold">{card.value}</div>
+                    <p className="text-sm text-muted-foreground">
+                      {card.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </motion.div>
+            ))}
+          </motion.div> */}
+          <SummaryCards
+            cards={[
+              {
+                title: "Total Bookings",
+                description: "All bookings to date",
+                value: bookings.length,
+                icon: CalendarDays,
+                color: "from-blue-500/10 to-blue-500/5 text-blue-700",
+              },
+              {
+                title: "Confirmed",
+                description: "Active and approved",
+                value: bookings.filter((b) => b.status === "confirmed").length,
+                icon: CheckCircle,
+                color: "from-green-500/10 to-green-500/5 text-green-700",
+              },
+              {
+                title: "Pending",
+                description: "Awaiting confirmation",
+                value: bookings.filter((b) => b.status === "pending").length,
+                icon: Clock,
+                color: "from-yellow-500/10 to-yellow-500/5 text-yellow-700",
+              },
+              {
+                title: "Cancelled",
+                description: "Declined or cancelled",
+                value: bookings.filter((b) => b.status === "cancelled").length,
+                icon: XCircle,
+                color: "from-red-500/10 to-red-500/5 text-red-700",
+              },
+            ]}
+          />
 
           <Separator />
 
           {/* Normal Table (only visible when not searching) */}
-          <motion.div
+          {/* <motion.div
             initial="hidden"
             animate="visible"
             custom={3}
@@ -253,7 +287,9 @@ export default function BookingsPage() {
                       </th>
                       <th className="text-left px-4 py-3 font-medium">Email</th>
                       <th className="text-left px-4 py-3 font-medium">Date</th>
-                      <th className="text-left px-4 py-3 font-medium">Status</th>
+                      <th className="text-left px-4 py-3 font-medium">
+                        Status
+                      </th>
                       <th className="text-right px-4 py-3 font-medium">
                         Action
                       </th>
@@ -302,7 +338,18 @@ export default function BookingsPage() {
                                   : "bg-red-100 text-red-700"
                               }`}
                             >
-                              {booking.status}
+                              {booking.status === "confirmed" && (
+                                <CheckCircle className="w-3.5 h-3.5" />
+                              )}
+                              {booking.status === "pending" && (
+                                <Clock className="w-3.5 h-3.5" />
+                              )}
+                              {booking.status === "cancelled" && (
+                                <XCircle className="w-3.5 h-3.5" />
+                              )}
+                              <span className="capitalize">
+                                {booking.status}
+                              </span>
                             </span>
                           </td>
                           <td className="px-4 py-3 text-right">
@@ -324,7 +371,69 @@ export default function BookingsPage() {
                 </table>
               </div>
             )}
-          </motion.div>
+          </motion.div> */}
+          <DataTable
+            title="Recent Bookings"
+            icon={Clock}
+            loading={loading}
+            data={bookings}
+            columns={[
+              { key: "bookingId", label: "Booking ID" },
+              {
+                label: "Customer",
+                render: (b) =>
+                  `${b.formData?.firstName || ""} ${
+                    b.formData?.lastName || ""
+                  }`,
+              },
+              { label: "Email", render: (b) => b.formData?.email || "N/A" },
+              {
+                label: "Date",
+                render: (b) => new Date(b.createdAt).toLocaleDateString(),
+              },
+              {
+                label: "Status",
+                render: (b) => (
+                  <span
+                    className={`px-2 py-1 text-xs rounded-full flex items-center gap-1 w-fit ${
+                      b.status === "confirmed"
+                        ? "bg-green-100 text-green-700"
+                        : b.status === "pending"
+                        ? "bg-yellow-100 text-yellow-700"
+                        : "bg-red-100 text-red-700"
+                    }`}
+                  >
+                    {b.status === "confirmed" && (
+                      <CheckCircle className="w-3.5 h-3.5" />
+                    )}
+                    {b.status === "pending" && (
+                      <Clock className="w-3.5 h-3.5" />
+                    )}
+                    {b.status === "cancelled" && (
+                      <XCircle className="w-3.5 h-3.5" />
+                    )}
+                    <span className="capitalize">{b.status}</span>
+                  </span>
+                ),
+              },
+              {
+                label: "Action",
+                align: "right",
+                render: (b) => (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => {
+                      setSelectedBooking(b);
+                      setDialogOpen(true);
+                    }}
+                  >
+                    View
+                  </Button>
+                ),
+              },
+            ]}
+          />
         </>
       )}
 
@@ -333,6 +442,15 @@ export default function BookingsPage() {
         booking={selectedBooking}
         open={dialogOpen}
         onClose={() => setDialogOpen(false)}
+        onStatusChange={(updatedBooking) => {
+          setBookings((prev) =>
+            prev.map((b) =>
+              b._id === updatedBooking._id
+                ? { ...b, status: updatedBooking.status }
+                : b
+            )
+          );
+        }}
       />
     </div>
   );
