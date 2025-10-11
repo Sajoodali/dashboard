@@ -121,7 +121,7 @@ export default function DashboardPage() {
             <tbody>
               {[
                 {
-                  user: "John Doe",
+                  user: "Sajood ali",
                   action: "Booked Appointment",
                   date: "Oct 8, 2025",
                   status: "Completed",
