@@ -63,21 +63,6 @@ export default function BookingsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      {/* <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="flex flex-col md:flex-row justify-between md:items-center gap-3"
-      >
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <CalendarDays className="h-7 w-7 text-blue-600" /> Bookings Overview
-          </h1>
-          <p className="text-muted-foreground">
-            Manage, track, and monitor all bookings in one place.
-          </p>
-        </div>
-      </motion.div> */}
       <PageHeader
         title="Bookings Overview"
         description="Manage, track, and monitor all bookings in one place."
@@ -168,63 +153,6 @@ export default function BookingsPage() {
       ) : (
         <>
           {/* Summary Cards */}
-          {/* <motion.div
-            initial="hidden"
-            animate="visible"
-            custom={2}
-            variants={fadeUp}
-            className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6"
-          >
-            {[
-              {
-                title: "Total Bookings",
-                description: "All bookings to date",
-                value: bookings.length,
-                icon: CalendarDays,
-                color: "from-blue-500/10 to-blue-500/5 text-blue-700",
-              },
-              {
-                title: "Confirmed",
-                description: "Active and approved",
-                value: bookings.filter((b) => b.status === "confirmed").length,
-                icon: CheckCircle,
-                color: "from-green-500/10 to-green-500/5 text-green-700",
-              },
-              {
-                title: "Pending",
-                description: "Awaiting confirmation",
-                value: bookings.filter((b) => b.status === "pending").length,
-                icon: Clock,
-                color: "from-yellow-500/10 to-yellow-500/5 text-yellow-700",
-              },
-              {
-                title: "Cancelled",
-                description: "Declined or cancelled",
-                value: bookings.filter((b) => b.status === "cancelled").length,
-                icon: XCircle,
-                color: "from-red-500/10 to-red-500/5 text-red-700",
-              },
-            ].map((card, index) => (
-              <motion.div key={index} custom={index} variants={fadeUp}>
-                <Card
-                  className={`bg-gradient-to-br ${card.color} border-none shadow-lg hover:shadow-xl transition-all duration-300`}
-                >
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      {card.title}
-                    </CardTitle>
-                    <card.icon className="h-5 w-5 opacity-70" />
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-3xl font-bold">{card.value}</div>
-                    <p className="text-sm text-muted-foreground">
-                      {card.description}
-                    </p>
-                  </CardContent>
-                </Card>
-              </motion.div>
-            ))}
-          </motion.div> */}
           <SummaryCards
             cards={[
               {
@@ -261,117 +189,6 @@ export default function BookingsPage() {
           <Separator />
 
           {/* Normal Table (only visible when not searching) */}
-          {/* <motion.div
-            initial="hidden"
-            animate="visible"
-            custom={3}
-            variants={fadeUp}
-            className="space-y-4"
-          >
-            <h2 className="text-xl font-semibold flex items-center gap-2">
-              <Clock className="h-5 w-5 text-blue-600" /> Recent Bookings
-            </h2>
-
-            {loading ? (
-              <p className="text-gray-500">Loading bookings...</p>
-            ) : (
-              <div className="overflow-hidden rounded-xl border">
-                <table className="min-w-full bg-white text-sm">
-                  <thead className="bg-gray-50 text-gray-600">
-                    <tr>
-                      <th className="text-left px-4 py-3 font-medium">
-                        Booking ID
-                      </th>
-                      <th className="text-left px-4 py-3 font-medium">
-                        Customer
-                      </th>
-                      <th className="text-left px-4 py-3 font-medium">Email</th>
-                      <th className="text-left px-4 py-3 font-medium">Date</th>
-                      <th className="text-left px-4 py-3 font-medium">
-                        Status
-                      </th>
-                      <th className="text-right px-4 py-3 font-medium">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {bookings.length === 0 ? (
-                      <tr>
-                        <td
-                          colSpan="6"
-                          className="text-center py-6 text-gray-500"
-                        >
-                          No bookings found.
-                        </td>
-                      </tr>
-                    ) : (
-                      bookings.map((booking, index) => (
-                        <motion.tr
-                          key={booking._id}
-                          custom={index}
-                          initial="hidden"
-                          animate="visible"
-                          variants={fadeUp}
-                          className="border-t hover:bg-gray-50 transition"
-                        >
-                          <td className="px-4 py-3 font-medium">
-                            {booking.bookingId}
-                          </td>
-                          <td className="px-4 py-3">
-                            {booking.formData?.firstName}{" "}
-                            {booking.formData?.lastName}
-                          </td>
-                          <td className="px-4 py-3 text-gray-600">
-                            {booking.formData?.email || "N/A"}
-                          </td>
-                          <td className="px-4 py-3">
-                            {new Date(booking.createdAt).toLocaleDateString()}
-                          </td>
-                          <td className="px-4 py-3">
-                            <span
-                              className={`px-2 py-1 text-xs rounded-full flex items-center gap-1 w-fit ${
-                                booking.status === "confirmed"
-                                  ? "bg-green-100 text-green-700"
-                                  : booking.status === "pending"
-                                  ? "bg-yellow-100 text-yellow-700"
-                                  : "bg-red-100 text-red-700"
-                              }`}
-                            >
-                              {booking.status === "confirmed" && (
-                                <CheckCircle className="w-3.5 h-3.5" />
-                              )}
-                              {booking.status === "pending" && (
-                                <Clock className="w-3.5 h-3.5" />
-                              )}
-                              {booking.status === "cancelled" && (
-                                <XCircle className="w-3.5 h-3.5" />
-                              )}
-                              <span className="capitalize">
-                                {booking.status}
-                              </span>
-                            </span>
-                          </td>
-                          <td className="px-4 py-3 text-right">
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              onClick={() => {
-                                setSelectedBooking(booking);
-                                setDialogOpen(true);
-                              }}
-                            >
-                              View
-                            </Button>
-                          </td>
-                        </motion.tr>
-                      ))
-                    )}
-                  </tbody>
-                </table>
-              </div>
-            )}
-          </motion.div> */}
           <DataTable
             title="Recent Bookings"
             icon={Clock}
