@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import PageHeader from "@/components/common/PageHeader";  
 import {
   Card,
   CardHeader,
@@ -57,25 +58,12 @@ export default function ContactsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="flex flex-col md:flex-row justify-between md:items-center gap-3"
-      >
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Phone className="h-7 w-7 text-blue-600" /> Contact Center
-          </h1>
-          <p className="text-muted-foreground">
-            Manage customer inquiries, messages, and feedback.
-          </p>
-        </div>
 
-        <Button className="flex items-center gap-2">
-          <UserPlus className="h-4 w-4" /> Add Contact
-        </Button>
-      </motion.div>
+      <PageHeader
+              title="Contact Center"
+              description="Manage customer inquiries, messages, and feedback."
+              icon={Phone}
+            />
 
       {/* Search & Filter */}
       <motion.div
