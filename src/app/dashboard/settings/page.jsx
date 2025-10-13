@@ -1,7 +1,9 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { useTheme } from "next-themes";
+import PageHeader from "@/components/common/PageHeader";
 import {
   Card,
   CardHeader,
@@ -16,7 +18,6 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Settings, Sun, Moon, Bell } from "lucide-react";
-import { useState } from "react";
 
 export default function SettingsPage() {
   const { theme, setTheme } = useTheme();
@@ -34,30 +35,26 @@ export default function SettingsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeIn}
-        className="flex flex-col md:flex-row justify-between md:items-center gap-3"
-      >
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Settings className="h-7 w-7 text-blue-600" /> Settings
-          </h1>
-          <p className="text-muted-foreground">
-            Manage your preferences, theme, and account information.
-          </p>
-        </div>
-      </motion.div>
-
+      <PageHeader
+        title=" Settings"
+        description=" Manage your preferences, theme, and account information."
+        icon={Settings}
+      />
       <Separator />
 
       {/* Theme Mode */}
-      <motion.div initial="hidden" animate="visible" custom={1} variants={fadeIn}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        custom={1}
+        variants={fadeIn}
+      >
         <Card className="shadow-sm hover:shadow-md transition">
           <CardHeader>
             <CardTitle>Theme Mode</CardTitle>
-            <CardDescription>Switch between light and dark mode</CardDescription>
+            <CardDescription>
+              Switch between light and dark mode
+            </CardDescription>
           </CardHeader>
           <CardContent className="flex items-center justify-between p-4">
             <div className="flex items-center gap-3">
@@ -79,7 +76,12 @@ export default function SettingsPage() {
       </motion.div>
 
       {/* Notifications */}
-      <motion.div initial="hidden" animate="visible" custom={2} variants={fadeIn}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        custom={2}
+        variants={fadeIn}
+      >
         <Card className="shadow-sm hover:shadow-md transition">
           <CardHeader>
             <CardTitle>Notifications</CardTitle>
@@ -99,7 +101,12 @@ export default function SettingsPage() {
       </motion.div>
 
       {/* Profile Settings */}
-      <motion.div initial="hidden" animate="visible" custom={3} variants={fadeIn}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        custom={3}
+        variants={fadeIn}
+      >
         <Card className="shadow-sm hover:shadow-md transition">
           <CardHeader>
             <CardTitle>Profile Information</CardTitle>
@@ -128,7 +135,12 @@ export default function SettingsPage() {
       </motion.div>
 
       {/* Danger Zone */}
-      <motion.div initial="hidden" animate="visible" custom={4} variants={fadeIn}>
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        custom={4}
+        variants={fadeIn}
+      >
         <Card className="border-red-200 bg-red-50 dark:bg-red-950/40">
           <CardHeader>
             <CardTitle className="text-red-600">Danger Zone</CardTitle>

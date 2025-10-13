@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import PageHeader from "@/components/common/PageHeader";
 import {
   Card,
   CardHeader,
@@ -53,25 +54,12 @@ export default function UsersPage() {
   return (
     <div className="space-y-8">
       {/* Header Section */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="flex flex-col md:flex-row justify-between md:items-center gap-3"
-      >
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <Users className="h-7 w-7 text-blue-600" /> Users Management
-          </h1>
-          <p className="text-muted-foreground">
-            Manage all users, roles, and permissions from here.
-          </p>
-        </div>
-
-        <Button className="flex items-center gap-2">
-          <UserPlus className="h-4 w-4" /> Add User
-        </Button>
-      </motion.div>
+      <PageHeader
+              title=" Users Management"
+              description=" Manage all users, roles, and permissions from here."
+              icon={Users}
+            />
+    
 
       {/* Search & Filters */}
       <motion.div

@@ -31,6 +31,8 @@ import {
   Cell,
 } from "recharts";
 
+import PageHeader from "@/components/common/PageHeader";
+
 export default function AnalyticsPage() {
   const fadeUp = {
     hidden: { opacity: 0, y: 20 },
@@ -66,22 +68,13 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="flex flex-col md:flex-row justify-between md:items-center gap-3"
-      >
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight flex items-center gap-2">
-            <BarChart3 className="h-7 w-7 text-blue-600" /> Analytics Dashboard
-          </h1>
-          <p className="text-muted-foreground">
-            Real-time overview of bookings, users, and performance trends.
-          </p>
-        </div>
-      </motion.div>
 
+       <PageHeader
+              title=" Analytics Dashboard"
+              description=" Real-time overview of bookings, users, and performance trends."
+              icon={BarChart3}
+            />
+            
       <Separator />
 
       {/* Stats Cards */}
