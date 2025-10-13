@@ -8,7 +8,7 @@ import {
   CardDescription,
   CardContent,
 } from "@/components/ui/card";
-import { Users, CalendarDays, BarChart3, DollarSign } from "lucide-react";
+import { Users, CalendarDays, BarChart3, DollarSign,LayoutDashboard  } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import PageHeader from "@/components/common/PageHeader";
@@ -34,7 +34,7 @@ export default function DashboardPage() {
       <PageHeader
               title=" Dashboard Overview"
               description=" Welcome Back  Let’s check your latest insights and stats."
-              icon={fadeUp}
+              icon={LayoutDashboard }
             />
       <Separator />
 

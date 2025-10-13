@@ -83,7 +83,7 @@ export default function BookingsPage() {
       <Separator />
 
       {/* If searching → show search results */}
-     {isSearching ? (
+      {isSearching ? (
         <motion.div
           initial="hidden"
           animate="visible"
