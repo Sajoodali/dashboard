@@ -55,11 +55,10 @@ export default function UsersPage() {
     <div className="space-y-8">
       {/* Header Section */}
       <PageHeader
-              title=" Users Management"
-              description=" Manage all users, roles, and permissions from here."
-              icon={Users}
-            />
-    
+        title=" Users Management"
+        description=" Manage all users, roles, and permissions from here."
+        icon={Users}
+      />
 
       {/* Search & Filters */}
       <motion.div

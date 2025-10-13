@@ -11,6 +11,7 @@ import {
 import { Users, CalendarDays, BarChart3, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+import PageHeader from "@/components/common/PageHeader";
 
 export default function DashboardPage() {
   // animation variant
@@ -30,20 +31,12 @@ export default function DashboardPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={fadeUp}
-        className="flex flex-col md:flex-row md:items-center md:justify-between gap-3"
-      >
-        <div>
-          <h1 className="text-3xl font-bold tracking-tight">Dashboard Overview</h1>
-          <p className="text-muted-foreground">
-            Welcome Back  Let’s check your latest insights and stats.
-          </p>
-        </div>
-        <Button className="w-fit">Generate Report</Button>
-      </motion.div>
+      <PageHeader
+              title=" Dashboard Overview"
+              description=" Welcome Back  Let’s check your latest insights and stats."
+              icon={fadeUp}
+            />
+      <Separator />
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-6">
