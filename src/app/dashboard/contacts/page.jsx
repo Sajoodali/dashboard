@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import PageHeader from "@/components/common/PageHeader";
 import SummaryCards from "@/components/common/SummaryCards";
 import DataTable from "@/components/common/DataTable";
+import SearchResultCard from "@/components/common/SearchResultCard";
 import BookingSearchBar from "@/components/SearchBar";
 import { fetchContacts } from "@/action/contactActions";
 import {
@@ -113,51 +114,14 @@ export default function ContactsPage() {
             </p>
           ) : (
             filteredContacts.map((contact, index) => (
-              <motion.div
+              <SearchResultCard
                 key={contact._id}
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={fadeUp}
-              >
-                <Card className="shadow-md hover:shadow-lg transition border border-blue-100 h-full flex flex-col justify-between">
-                  <CardHeader className="flex justify-between items-start">
-                    <CardTitle className="text-base font-semibold">
-                      {contact.name}
-                    </CardTitle>
-                    <span
-                      className={`px-2 py-1 text-xs rounded-full ${
-                        contact.status === "New"
-                          ? "bg-blue-100 text-blue-700"
-                          : contact.status === "In Progress"
-                          ? "bg-yellow-100 text-yellow-700"
-                          : "bg-green-100 text-green-700"
-                      }`}
-                    >
-                      {contact.status}
-                    </span>
-                  </CardHeader>
-                  <CardContent className="space-y-2 text-sm flex-1">
-                    <p>
-                      <strong>Email:</strong> {contact.email}
-                    </p>
-                    <p>
-                      <strong>Phone:</strong> {contact.phone || "N/A"}
-                    </p>
-                    <p>
-                      <strong>Message:</strong>{" "}
-                      {contact.message || "No message"}
-                    </p>
-                  </CardContent>
-                  <Button
-                    variant="outline"
-                    className="mt-2 w-full"
-                    onClick={() => console.log("View details", contact._id)}
-                  >
-                    View Details
-                  </Button>
-                </Card>
-              </motion.div>
+                item={contact}
+                index={index}
+                fadeUp={fadeUp}
+                type="contact"
+                onViewDetails={(c) => console.log("Contact details:", c)}
+              />
             ))
           )}
         </motion.div>
@@ -209,11 +173,6 @@ export default function ContactsPage() {
             columns={[
               { key: "name", label: "Name" },
               { key: "email", label: "Email" },
-              {
-                key: "phone",
-                label: "Phone",
-                render: (c) => c.phone || "N/A", // Make sure phone shows even if empty
-              },
               {
                 key: "message",
                 label: "Message",

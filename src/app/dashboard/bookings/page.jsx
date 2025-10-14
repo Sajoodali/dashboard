@@ -5,15 +5,9 @@ import DataTable from "@/components/common/DataTable";
 import SummaryCards from "@/components/common/SummaryCards";
 import PageHeader from "@/components/common/PageHeader";
 import BookingSearchBar from "@/components/SearchBar";
+import SearchResultCard from "@/components/common/SearchResultCard";
 import BookingDetailsDialog from "@/components/BookingDetailsDialog";
 import { motion } from "framer-motion";
-import {
-  Card,
-  CardHeader,
-  CardTitle,
-  CardDescription,
-  CardContent,
-} from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { CalendarDays, CheckCircle, Clock, XCircle } from "lucide-react";
@@ -96,57 +90,17 @@ export default function BookingsPage() {
             </p>
           ) : (
             filteredBookings.map((booking, index) => (
-              <motion.div
+              <SearchResultCard
                 key={booking._id}
-                custom={index}
-                initial="hidden"
-                animate="visible"
-                variants={fadeUp}
-              >
-                <Card className="shadow-md hover:shadow-lg transition border border-blue-100">
-                  <CardHeader>
-                    <CardTitle className="flex justify-between items-center">
-                      {booking.formData?.firstName} {booking.formData?.lastName}
-                      <span
-                        className={`px-2 py-1 text-xs rounded-full ${
-                          booking.status === "confirmed"
-                            ? "bg-green-100 text-green-700"
-                            : booking.status === "pending"
-                            ? "bg-yellow-100 text-yellow-700"
-                            : "bg-red-100 text-red-700"
-                        }`}
-                      >
-                        {booking.status}
-                      </span>
-                    </CardTitle>
-                    <CardDescription>
-                      Booking ID: {booking.bookingId}
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent className="space-y-2 text-sm">
-                    <p>
-                      <strong>Email:</strong> {booking.formData?.email}
-                    </p>
-                    <p>
-                      <strong>Phone:</strong> {booking.formData?.phone}
-                    </p>
-                    <p>
-                      <strong>Date:</strong>{" "}
-                      {new Date(booking.createdAt).toLocaleDateString()}
-                    </p>
-                    <Button
-                      className="w-full mt-2"
-                      variant="outline"
-                      onClick={() => {
-                        setSelectedBooking(booking);
-                        setDialogOpen(true);
-                      }}
-                    >
-                      View Details
-                    </Button>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                item={booking}
+                index={index}
+                fadeUp={fadeUp}
+                type="booking"
+                onViewDetails={(b) => {
+                  setSelectedBooking(b);
+                  setDialogOpen(true);
+                }}
+              />
             ))
           )}
         </motion.div>
