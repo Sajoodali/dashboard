@@ -7,7 +7,7 @@
 //  */
 // const corsHeaders = {
 //   "Access-Control-Allow-Origin": "*",
-//   "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+//   "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
 //   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 // };
 
@@ -28,7 +28,7 @@
 
 //     console.log("Received booking data:", data);
 
-//     // ✅ Updated validation according to your schema
+//     // ✅ Validation
 //     if (
 //       !data.bookingId ||
 //       !data.webName ||
@@ -38,33 +38,18 @@
 //       !data.formData.email ||
 //       !data.formData.phone ||
 //       !data.formData.date ||
-//       !data.totalPrice === undefined ||
-//       !data.discountedPrice === undefined ||
+//       data.totalPrice === undefined ||
+//       data.discountedPrice === undefined ||
 //       !data.submittedAt ||
-//       !data.vehicleCount === undefined
+//       data.vehicleCount === undefined
 //     ) {
-//       console.log("Missing fields:", {
-//         bookingId: !data.bookingId,
-//         webName: !data.webName,
-//         formData: !data.formData,
-//         firstName: !data.formData?.firstName,
-//         lastName: !data.formData?.lastName,
-//         email: !data.formData?.email,
-//         phone: !data.formData?.phone,
-//         date: !data.formData?.date,
-//         totalPrice: !data.totalPrice,
-//         discountedPrice: !data.discountedPrice,
-//         submittedAt: !data.submittedAt,
-//         vehicleCount: !data.vehicleCount,
-//       });
-
 //       return NextResponse.json(
 //         { success: false, error: "Missing required fields" },
 //         { status: 400, headers: corsHeaders }
 //       );
 //     }
 
-//     // ✅ Check if bookingId already exists
+//     // ✅ Check duplicate
 //     const existingBooking = await Booking.findOne({
 //       bookingId: data.bookingId,
 //     });
@@ -75,7 +60,7 @@
 //       );
 //     }
 
-//     // ✅ Create new booking with proper structure
+//     // ✅ Create new booking
 //     const newBooking = await Booking.create({
 //       bookingId: data.bookingId,
 //       webName: data.webName,
@@ -116,20 +101,10 @@
 //   } catch (err) {
 //     console.error("POST /api/booking error:", err);
 
-//     // ✅ Handle duplicate key error
 //     if (err.code === 11000) {
 //       return NextResponse.json(
 //         { success: false, error: "Booking ID already exists" },
 //         { status: 409, headers: corsHeaders }
-//       );
-//     }
-
-//     // ✅ Handle validation errors
-//     if (err.name === "ValidationError") {
-//       const errors = Object.values(err.errors).map((error) => error.message);
-//       return NextResponse.json(
-//         { success: false, error: `Validation failed: ${errors.join(", ")}` },
-//         { status: 400, headers: corsHeaders }
 //       );
 //     }
 
@@ -146,7 +121,6 @@
 // export async function GET() {
 //   try {
 //     await connectDB();
-
 //     const bookings = await Booking.find().sort({ createdAt: -1 });
 
 //     return NextResponse.json(
@@ -166,24 +140,79 @@
 //   }
 // }
 
+// /**
+//  * ✅ PUT — Update Booking Status (Confirm / Cancel)
+//  */
+// export async function PUT(req) {
+//   try {
+//     await connectDB();
+
+//     const { searchParams } = new URL(req.url);
+//     const id = searchParams.get("id");
+//     const { status } = await req.json();
+
+//     if (!id || !status) {
+//       return NextResponse.json(
+//         { success: false, error: "Missing ID or status" },
+//         { status: 400, headers: corsHeaders }
+//       );
+//     }
+
+//     // ✅ Validate allowed statuses
+//     const allowedStatuses = ["pending", "confirmed", "cancelled"];
+//     if (!allowedStatuses.includes(status)) {
+//       return NextResponse.json(
+//         { success: false, error: "Invalid status value" },
+//         { status: 400, headers: corsHeaders }
+//       );
+//     }
+
+//     // ✅ Update booking
+//     const updatedBooking = await Booking.findByIdAndUpdate(
+//       id,
+//       { status },
+//       { new: true }
+//     );
+
+//     if (!updatedBooking) {
+//       return NextResponse.json(
+//         { success: false, error: "Booking not found" },
+//         { status: 404, headers: corsHeaders }
+//       );
+//     }
+
+//     console.log(`Booking ${id} updated to status: ${status}`);
+
+//     return NextResponse.json(
+//       {
+//         success: true,
+//         message: `Booking ${status} successfully`,
+//         data: updatedBooking,
+//       },
+//       { status: 200, headers: corsHeaders }
+//     );
+//   } catch (err) {
+//     console.error("PUT /api/booking error:", err);
+//     return NextResponse.json(
+//       { success: false, error: "Failed to update booking" },
+//       { status: 500, headers: corsHeaders }
+//     );
+//   }
+// }
+
 
 
 import { NextResponse } from "next/server";
 import Booking, { BookingStatus } from "@/models/Booking";
 import connectDB from "@/database/mongodb";
 
-/**
- * ✅ CORS Headers
- */
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
-  "Access-Control-Allow-Methods": "GET, POST, PUT, OPTIONS",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
   "Access-Control-Allow-Headers": "Content-Type, Authorization",
 };
 
-/**
- * ✅ OPTIONS — Handle Preflight Request
- */
+// ✅ OPTIONS (for CORS preflight)
 export async function OPTIONS() {
   return new NextResponse(null, { status: 204, headers: corsHeaders });
 }
@@ -195,8 +224,6 @@ export async function POST(req) {
   try {
     await connectDB();
     const data = await req.json();
-
-    console.log("Received booking data:", data);
 
     // ✅ Validation
     if (
@@ -219,10 +246,8 @@ export async function POST(req) {
       );
     }
 
-    // ✅ Check duplicate
-    const existingBooking = await Booking.findOne({
-      bookingId: data.bookingId,
-    });
+    // ✅ Check for duplicate bookingId
+    const existingBooking = await Booking.findOne({ bookingId: data.bookingId });
     if (existingBooking) {
       return NextResponse.json(
         { success: false, error: "Booking ID already exists" },
@@ -258,26 +283,16 @@ export async function POST(req) {
       status: BookingStatus.PENDING,
     });
 
-    console.log("Booking created successfully:", newBooking.bookingId);
-
     return NextResponse.json(
       {
         success: true,
-        data: newBooking,
         message: "Booking created successfully",
+        data: newBooking,
       },
       { status: 201, headers: corsHeaders }
     );
   } catch (err) {
     console.error("POST /api/booking error:", err);
-
-    if (err.code === 11000) {
-      return NextResponse.json(
-        { success: false, error: "Booking ID already exists" },
-        { status: 409, headers: corsHeaders }
-      );
-    }
-
     return NextResponse.json(
       { success: false, error: "Internal Server Error" },
       { status: 500, headers: corsHeaders }
@@ -286,7 +301,7 @@ export async function POST(req) {
 }
 
 /**
- * ✅ GET — Fetch all bookings (sorted latest first)
+ * ✅ GET — Fetch all bookings (latest first)
  */
 export async function GET() {
   try {
@@ -309,64 +324,3 @@ export async function GET() {
     );
   }
 }
-
-/**
- * ✅ PUT — Update Booking Status (Confirm / Cancel)
- */
-export async function PUT(req) {
-  try {
-    await connectDB();
-
-    const { searchParams } = new URL(req.url);
-    const id = searchParams.get("id");
-    const { status } = await req.json();
-
-    if (!id || !status) {
-      return NextResponse.json(
-        { success: false, error: "Missing ID or status" },
-        { status: 400, headers: corsHeaders }
-      );
-    }
-
-    // ✅ Validate allowed statuses
-    const allowedStatuses = ["pending", "confirmed", "cancelled"];
-    if (!allowedStatuses.includes(status)) {
-      return NextResponse.json(
-        { success: false, error: "Invalid status value" },
-        { status: 400, headers: corsHeaders }
-      );
-    }
-
-    // ✅ Update booking
-    const updatedBooking = await Booking.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true }
-    );
-
-    if (!updatedBooking) {
-      return NextResponse.json(
-        { success: false, error: "Booking not found" },
-        { status: 404, headers: corsHeaders }
-      );
-    }
-
-    console.log(`Booking ${id} updated to status: ${status}`);
-
-    return NextResponse.json(
-      {
-        success: true,
-        message: `Booking ${status} successfully`,
-        data: updatedBooking,
-      },
-      { status: 200, headers: corsHeaders }
-    );
-  } catch (err) {
-    console.error("PUT /api/booking error:", err);
-    return NextResponse.json(
-      { success: false, error: "Failed to update booking" },
-      { status: 500, headers: corsHeaders }
-    );
-  }
-}
-
